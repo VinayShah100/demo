@@ -1,4 +1,60 @@
+# 📄 Testing Documentation – ERP System  
+**Prepared By:** *Vinay Shah (SQC Candidate)*  
+**Branch:** `VinayShah_Testing_SQC`  
+**PR Number:** #26  
+**Assignment:** SQC Evaluation – Test & Find Everything Wrong With the System  
+
+---
+## 🔰 1. Introduction  
+This document contains all testing work performed on the ERP-System as part of the SQC evaluation.  
+It includes test scenarios, test cases, bug reports, observations, and improvement suggestions.  
+All updates are committed daily to the **same branch and PR** as per instructions.
 # Bug Report and Test Cases
+--------------------------------------------------------------------------------------------------------------------
+Bug Report 1: Login & Logout Feature Not Working
+
+Title: Login and Logout functionality not working / possibly not implemented
+Severity: High
+Priority: High
+
+Description:
+The application does not perform login or logout actions. When valid credentials are entered, no navigation or authentication occurs. Logout button also does not respond, indicating the functionality may be missing or incomplete.
+
+Steps to Reproduce:
+
+Open the application
+
+Enter valid username and password
+
+Click on Login
+
+Observe behavior
+
+After login (if login works), click on Logout
+
+Expected Result:
+
+Login should validate credentials and redirect user to dashboard/home page
+
+Logout should end the session and redirect user to the login page
+
+Actual Result:
+
+Login button does nothin
+
+Logout function not implemented / no response
+
+Evidence:
+
+No UI movement or request triggered on logout click
+
+Logout button non-functional
+
+
+
+
+# Bug Report and Test Cases
+
 
 | Bug ID | Description | Location | Severity | Test Case |
 | :--- | :--- | :--- | :--- | :--- |
