@@ -1,70 +1,130 @@
-# 📄 Testing Documentation – ERP System  
-**Prepared By:** *Vinay Shah (SQC Candidate)*  
-**Branch:** `VinayShah_Testing_SQC`  
-**PR Number:** #26  
-**Assignment:** SQC Evaluation – Test & Find Everything Wrong With the System  
+📄 Testing Documentation – Promodizer Module
 
----
-## 🔰 1. Introduction  
-This document contains all testing work performed on the ERP-System as part of the SQC evaluation.  
-It includes test scenarios, test cases, bug reports, observations, and improvement suggestions.  
-All updates are committed daily to the **same branch and PR** as per instructions.
-# Bug Report and Test Cases
---------------------------------------------------------------------------------------------------------------------
-Bug Report 1: Login & Logout Feature Not Working
+Prepared By: Vinay Shah (SQC Candidate)
+Branch: VinayShah_Testing_SQC
+PR Number: TBD
+Assignment: SQC Evaluation – Test & Identify All Issues in Promodizer Module
 
-Title: Login and Logout functionality not working / possibly not implemented
+🔰 1. Introduction
+
+This document contains all testing work completed on the Promodizer Management Module as part of the SQC evaluation.
+It includes:
+
+Test scenarios
+
+Detailed bug reports
+
+UI/UX issues
+
+Functional breakdowns
+
+Security findings
+
+Data validation issues
+
+Workflow defects
+
+Additional observations
+
+All findings are structured in a GitHub-friendly format with clear severity, reproduction steps, and evidence references.
+All updates will be pushed to the same branch and PR, following standard QA submission guidelines.
+
+🐞 Bug Report & Test Cases
+
+Below is the full list of validated defects, documented in professional QA format.
+
+🔥 Major Bug Report 1: Form Allows Invalid Input & “Create Promodizer” Still Enables
+
+Title: Validation Not Working for Create Promodizer Form
 Severity: High
 Priority: High
 
-Description:
-The application does not perform login or logout actions. When valid credentials are entered, no navigation or authentication occurs. Logout button also does not respond, indicating the functionality may be missing or incomplete.
+Description
 
-Steps to Reproduce:
+The Create Promodizer form accepts invalid data (special characters, wrong formats, incorrect phone/email) and still enables the Create Promodizer button. No field-level validation appears.
 
-Open the application
+Steps to Reproduce
 
-Enter valid username and password
+Open promodizer_create.html
 
-Click on Login
+Enter invalid values:
 
-Observe behavior
+First Name: @#$%
 
-After login (if login works), click on Logout
+Last Name: %%%
 
-Expected Result:
+Employee ID: PRO
 
-Login should validate credentials and redirect user to dashboard/home page
+Phone: 000-000-0000
 
-Logout should end the session and redirect user to the login page
+Email: hhh@gamil.com
 
-Actual Result:
+Observe Create button
 
-Login button does nothin
+Submit form
 
-Logout function not implemented / no response
+Expected Result
 
-Evidence:
+Form should block submission until all fields are valid
 
-No UI movement or request triggered on logout click
+Field-level red error indicators must appear
 
-Logout button non-functional
+Actual Result
 
+Button activates
 
+Form allows invalid entries
 
+No errors displayed
 
-# Bug Report and Test Cases
+Evidence
 
+Invalid entries saved & visible in Promodizer list.
 
-| Bug ID | Description | Location | Severity | Test Case |
-| :--- | :--- | :--- | :--- | :--- |
-| BUG-001 | Hardcoded API Key in `initialiseFeedback` and `initialiseHelpbot` | `gtvl-management-portal/app.js` (Lines 884, 911) | High | 1. Open `app.js`.<br>2. Search for "apiKey".<br>3. Verify that the key is hardcoded in the source. |
-| BUG-002 | Sensitive User Data Stored in Local Storage | `gtvl-management-portal/app_data.js` & `management_dashboard.html` | High | 1. Open the application in a browser.<br>2. Open Developer Tools (F12).<br>3. Go to Application > Local Storage.<br>4. Verify that "users" key contains plain text user data including emails and phone numbers. |
-| BUG-003 | Logic Error: Unassigned Supervisor Calculation | `gtvl-management-portal/management_dashboard.html` (Line 788) | Medium | 1. Set up data with 1 supervisor assigned to 2 stores.<br>2. Check "Unassigned Supervisors" count.<br>3. Expected: Count should decrease by 1.<br>4. Actual: Count might be incorrect if it assumes 1:1 mapping. |
-| BUG-004 | Logic Error: Store Coverage Calculation | `gtvl-management-portal/management_dashboard.html` (Line 800) | Medium | 1. Assign 2 supervisors to the same store.<br>2. Check "Stores with Supervisors" count.<br>3. Expected: Count should be 1 (unique store).<br>4. Actual: Count will be 2 (based on allocation count). |
-| BUG-005 | Missing Error Handling for JSON Parsing | `gtvl-management-portal/management_dashboard.html` (Line 775) | Medium | 1. Open Developer Tools.<br>2. Run `localStorage.setItem('users', 'invalid-json')`.<br>3. Reload the page.<br>4. Verify if the dashboard crashes or shows empty data without user feedback. |
-| BUG-006 | External Script Dependency without Fallback | `gtvl-management-portal/app.js` (Lines 875, 906, 938) | Medium | 1. Block network requests to `*.tiram.app` using DevTools Network blocking.<br>2. Reload the page.<br>3. Verify if the application handles the missing scripts gracefully or throws errors. |
-| BUG-007 | Potential XSS via innerHTML | `gtvl-management-portal/app.js` (Line 725) | Low | 1. Review `app.js`.<br>2. Identify usage of `innerHTML` to inject modal content.<br>3. Although currently static, verify if any dynamic variables are ever interpolated into this string. |
-| BUG-008 | Hardcoded Prototype Data Initialization | `gtvl-management-portal/app_data.js` | Low | 1. Clear Local Storage.<br>2. Reload the page.<br>3. Verify that `app_data.js` re-initializes with hardcoded mock data, potentially overwriting any real state if logic changes. |
-| BUG-009 | Potential CSV Injection in Transaction Export | `gtvl-sales-analytics-dashboard/transaction_history.html` | Medium | 1. Modify a transaction record in Local Storage to start with `=cmd|' /C calc'!A0`.<br>2. Export transactions to CSV.<br>3. Open CSV in Excel and check if it attempts to execute the formula. |
-| BUG-010 | Timezone Inconsistency in Date Filters | `gtvl-sales-analytics-dashboard/dashboard.html` | Low | 1. Set system time to a timezone significantly different from UTC.<br>2. Filter transactions for "Today".<br>3. Verify if transactions from late previous day (UTC) are included/excluded correctly. |
+🐞 Consolidated Bug Summary Table
+Bug ID	Description	Location	Severity	Test Case
+BUG-001	Create Form accepts invalid characters & enables button	promodizer_create.html	High	Enter invalid data → Create button becomes active
+BUG-002	System saves invalid Promodizer data	Promodizer List	Critical	Create invalid Promodizer → List displays it
+BUG-003	Long names break table layout	Promodizer List	High	Add long string → Table overflows
+BUG-004	Employee ID accepts wrong formats	Create & List	High	Enter 98998 → Saved & displayed
+BUG-005	Invalid email values accepted	Create Screen	Medium	Enter malformed email → Form accepts
+BUG-006	Incorrect phone numbers accepted	Create Screen	Medium	Enter 999-999-9999 → Accepted
+BUG-007	Table allows special characters (XSS risk)	Promodizer List	High	Enter <script> or special chars
+BUG-008	Horizontal scroll breaks alignment	Promodizer List	Medium	Scroll horizontally
+BUG-009	Action icons shift out of alignment	Table Rows	Medium	Long text pushes icons
+BUG-010	Action icons become unclickable	Table Rows	High	UI layer block
+BUG-011	“View Promodizer” does not work	View Icon	High	Click → no response
+BUG-012	“Edit Promodizer” not functioning	Edit Icon	High	Click → nothing happens
+BUG-013	Delete action extremely slow	Delete Icon	Medium–High	Click → delay
+BUG-014	Logout does not clear session (Security Bug)	Header Logout	High	Logout → Back → Dashboard accessible
+BUG-015	UI overlaps on small screens	Table Area	Medium	Feedback/chat icon blocks icons
+BUG-016	Chatbot icon overlaps action icons	Lower-right widget	Medium–High	Hard to click Edit/Delete
+BUG-017	Search bar returns incorrect results	Search Input	High	Search “kml” → Unrelated result shown
+BUG-018	Status dropdown slow & unresponsive	Filters	Medium	Requires multiple clicks
+BUG-019	Status dropdown arrow misaligned	Filters	Low	UI cosmetic issue
+BUG-020	Sorting functionality missing	Column Headers	Medium	Click headers → nothing
+BUG-021	Breadcrumb navigation not working	Page Header	Medium–High	Click Dashboard → nothing
+BUG-022	Browser back button behaves incorrectly	All pages	Medium	Back → wrong/partial navigation
+BUG-023	Pagination missing for long lists	List Page	Medium	Long table → scroll only
+BUG-024	Search + Filter combination returns wrong results	Filters	High	Search + status → incorrect
+BUG-025	“Clear Filters” does not fully reset table	Filters	Medium	Search stays or table not refreshed
+BUG-026	Table header shifts while horizontal scrolling	List Page	Medium	Header misalignment
+🧪 Additional Notes
+
+Most issues stem from missing validation, poor UI layout handling, and non-functional buttons.
+
+Security concerns exist due to session persistence after logout.
+
+Data integrity is heavily affected due to unrestricted input.
+
+Search, filter, sort, pagination → all require implementation or fixes.
+
+📌 Summary
+
+✔ Major functional issues found
+✔ Validation rules missing across system
+✔ UI breaks easily with long text
+✔ Core features (View, Edit, Delete) not functional
+✔ Search/Filter/Pagination incomplete
+✔ Logout insecure
+✔ Table rendering unstable
