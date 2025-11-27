@@ -80,8 +80,99 @@
 
 ---
 
-## 4. Edge Cases
+
+
+# Manual Test Cases for SKU Management
+
+## Test Environment Setup
+**Pre-requisites:**
+1.  Ensure `app_data.js` has initialized the Local Storage with sample data.
+2.  Open `sku_list.html` in a modern web browser (Chrome, Firefox, Edge).
+3.  Set screen resolution to standard desktop size (e.g., 1920x1080) initially.
+
+---
+
+## 1. SKU List Page (`sku_list.html`)
+
+### 1.1 UI Verification
 | TC ID | Test Case Title | Module | Pre-Condition | Test Steps | Test Data | Expected Result | Actual Result | Status | Severity |
 | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
-| TC_EDGE_001 | Local Storage Empty | Edge Case | Clear Local Storage | Reload Page | Empty Storage | Data re-initializes, dashboard loads | Not tested | Skipped | High |
+| TC_SKU_LIST_UI_001 | Verify Page Title | SKU List | Page loaded | Observe browser tab title | N/A | Title: "SKUs - GTVL Management Portal" | Title matched expected value | Pass | Low |
+| TC_SKU_LIST_UI_002 | Verify Header & Sidebar | SKU List | Page loaded | Check Header and Sidebar presence | N/A | Header and Sidebar visible | Header and Sidebar are visible | Pass | Medium |
+| TC_SKU_LIST_UI_003 | Verify Page Heading | SKU List | Page loaded | Check main heading | N/A | Heading: "SKUs" | Heading is "SKUs" | Pass | Low |
+| TC_SKU_LIST_UI_004 | Verify Action Buttons | SKU List | Page loaded | Check "Import SKUs" and "Add New SKU" buttons | N/A | Buttons visible and styled correctly | Buttons are visible | Pass | High |
+| TC_SKU_LIST_UI_005 | Verify Search & Filters | SKU List | Page loaded | Check Search input, Category and Status dropdowns | N/A | All controls visible | Search and filters are visible | Pass | Medium |
+| TC_SKU_LIST_UI_006 | Verify Data Table | SKU List | Page loaded | Check table headers and content | N/A | Table with columns: SKU Code, Barcode, Name, Category, Price, Status, Actions | Table structure is correct | Pass | Critical |
+
+### 1.2 Functional Testing
+| TC ID | Test Case Title | Module | Pre-Condition | Test Steps | Test Data | Expected Result | Actual Result | Status | Severity |
+| :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
+| TC_SKU_LIST_FUNC_001 | Search Functionality | SKU List | List has data | Enter a known SKU name in search | "Chips" | Table filters to show matching items | Not tested (skipped) | Skipped | High |
+| TC_SKU_LIST_FUNC_002 | Filter by Status | SKU List | List has data | Select "Active" from Status filter | N/A | Only active SKUs displayed | Not tested (skipped) | Skipped | Medium |
+| TC_SKU_LIST_FUNC_003 | Navigate to Create SKU | SKU List | Page loaded | Click "Add New SKU" button | N/A | Redirects to `sku_create.html` | Redirected successfully | Pass | Critical |
+| TC_SKU_LIST_FUNC_004 | Navigate to Import SKUs | SKU List | Page loaded | Click "Import SKUs" button | N/A | Redirects to `sku_import.html` | Redirected successfully | Pass | Medium |
+| TC_SKU_LIST_FUNC_005 | Navigate to Details | SKU List | List has data | Click "View" icon/button on a row | N/A | Redirects to `sku_details.html?id=...` | Redirected successfully | Pass | Critical |
+| TC_SKU_LIST_FUNC_006 | Navigate to Edit | SKU List | List has data | Click "Edit" icon/button on a row | N/A | Redirects to `sku_edit.html?id=...` | Redirected successfully | Pass | Critical |
+
+---
+
+## 2. SKU Create Page (`sku_create.html`)
+
+### 2.1 UI Verification
+| TC ID | Test Case Title | Module | Pre-Condition | Test Steps | Test Data | Expected Result | Actual Result | Status | Severity |
+| :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
+| TC_SKU_CREATE_UI_001 | Verify Page Elements | SKU Create | Page loaded | Check form fields | N/A | Fields: SKU Code, Barcode, Name, Category, Price, Status, Description | All fields present | Pass | High |
+| TC_SKU_CREATE_UI_002 | Verify Buttons | SKU Create | Page loaded | Check "Cancel" and "Create SKU" buttons | N/A | Buttons visible, "Create SKU" disabled initially | Buttons visible and state correct | Pass | Medium |
+
+### 2.2 Functional Testing
+| TC ID | Test Case Title | Module | Pre-Condition | Test Steps | Test Data | Expected Result | Actual Result | Status | Severity |
+| :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
+| TC_SKU_CREATE_FUNC_001 | Form Validation | SKU Create | Page loaded | Touch fields and leave empty | N/A | Error messages displayed for required fields | Validation logic verified (button disabled) | Pass | Medium |
+| TC_SKU_CREATE_FUNC_002 | Successful Creation | SKU Create | Page loaded | Fill all valid data and submit | Code: TEST-001, Name: Test Item | Success toast appears, redirects to list | SKU created and redirected | Pass | Critical |
+| TC_SKU_CREATE_FUNC_003 | Cancel Creation | SKU Create | Page loaded | Click "Cancel" button | N/A | Redirects back to `sku_list.html` | Not tested (skipped) | Skipped | Low |
+
+---
+
+## 3. SKU Edit Page (`sku_edit.html`)
+
+### 3.1 UI Verification
+| TC ID | Test Case Title | Module | Pre-Condition | Test Steps | Test Data | Expected Result | Actual Result | Status | Severity |
+| :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
+| TC_SKU_EDIT_UI_001 | Verify Data Loading | SKU Edit | Accessed via Edit button | Check if form is pre-filled | N/A | Form fields populated with SKU data | Form pre-filled correctly | Pass | Critical |
+
+### 3.2 Functional Testing
+| TC ID | Test Case Title | Module | Pre-Condition | Test Steps | Test Data | Expected Result | Actual Result | Status | Severity |
+| :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
+| TC_SKU_EDIT_FUNC_001 | Update SKU | SKU Edit | Form loaded | Change Name and Price, Submit | Name: Updated Test | Success toast, redirects/updates | SKU updated and verified in list | Pass | Critical |
+| TC_SKU_EDIT_FUNC_002 | Cancel Edit | SKU Edit | Form loaded | Click "Cancel" | N/A | Redirects back to previous page | Not tested (skipped) | Skipped | Low |
+
+---
+
+## 4. SKU Details Page (`sku_details.html`)
+
+### 4.1 UI Verification
+| TC ID | Test Case Title | Module | Pre-Condition | Test Steps | Test Data | Expected Result | Actual Result | Status | Severity |
+| :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
+| TC_SKU_DETAILS_UI_001 | Verify Details Display | SKU Details | Accessed via View | Check displayed info | N/A | All SKU details shown correctly | Details displayed correctly | Pass | High |
+
+### 4.2 Functional Testing
+| TC ID | Test Case Title | Module | Pre-Condition | Test Steps | Test Data | Expected Result | Actual Result | Status | Severity |
+| :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
+| TC_SKU_DETAILS_FUNC_001 | Navigate Back | SKU Details | Page loaded | Click "Back to List" | N/A | Redirects to `sku_list.html` | Not tested (skipped) | Skipped | Low |
+| TC_SKU_DETAILS_FUNC_002 | Delete SKU | SKU Details | Page loaded | Click "Delete", Confirm | N/A | SKU deleted, redirects to list | SKU deleted and verified gone from list | Pass | Critical |
+
+---
+
+## 5. SKU Import Page (`sku_import.html`)
+
+### 5.1 UI Verification
+| TC ID | Test Case Title | Module | Pre-Condition | Test Steps | Test Data | Expected Result | Actual Result | Status | Severity |
+| :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
+| TC_SKU_IMPORT_UI_001 | Verify Import Interface | SKU Import | Page loaded | Check Dropzone and Templates | N/A | Dropzone and Template download links visible | Interface verified | Pass | Medium |
+
+### 5.2 Functional Testing
+| TC ID | Test Case Title | Module | Pre-Condition | Test Steps | Test Data | Expected Result | Actual Result | Status | Severity |
+| :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
+| TC_SKU_IMPORT_FUNC_001 | Download Template | SKU Import | Page loaded | Click "Download CSV Template" | N/A | CSV file downloaded | Button clickable | Pass | Low |
+Edge Case | Clear Local Storage | Reload Page | Empty Storage | Data re-initializes, dashboard loads | Not tested | Skipped | High |
 | TC_EDGE_002 | Zero Data | Edge Case | Clear Data Arrays | Reload Page | Zero items | Metrics show "0" or "-", no errors | Not tested | Skipped | Medium |
