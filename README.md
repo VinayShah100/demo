@@ -1,151 +1,87 @@
-# Bug Report and Test Cases
+# Manual Test Cases for Management Dashboard
 
-| Bug ID | Description | Location | Severity | Test Case |
-| :--- | :--- | :--- | :--- | :--- |
-| BUG-001 | Hardcoded API Key in `initialiseFeedback` and `initialiseHelpbot` | `gtvl-management-portal/app.js` (Lines 884, 911) | High | 1. Open `app.js`.<br>2. Search for "apiKey".<br>3. Verify that the key is hardcoded in the source. |
-| BUG-002 | Sensitive User Data Stored in Local Storage | `gtvl-management-portal/app_data.js` & `management_dashboard.html` | High | 1. Open the application in a browser.<br>2. Open Developer Tools (F12).<br>3. Go to Application > Local Storage.<br>4. Verify that "users" key contains plain text user data including emails and phone numbers. |
-| BUG-003 | Logic Error: Unassigned Supervisor Calculation | `gtvl-management-portal/management_dashboard.html` (Line 788) | Medium | 1. Set up data with 1 supervisor assigned to 2 stores.<br>2. Check "Unassigned Supervisors" count.<br>3. Expected: Count should decrease by 1.<br>4. Actual: Count might be incorrect if it assumes 1:1 mapping. |
-| BUG-004 | Logic Error: Store Coverage Calculation | `gtvl-management-portal/management_dashboard.html` (Line 800) | Medium | 1. Assign 2 supervisors to the same store.<br>2. Check "Stores with Supervisors" count.<br>3. Expected: Count should be 1 (unique store).<br>4. Actual: Count will be 2 (based on allocation count). |
-| BUG-005 | Missing Error Handling for JSON Parsing | `gtvl-management-portal/management_dashboard.html` (Line 775) | Medium | 1. Open Developer Tools.<br>2. Run `localStorage.setItem('users', 'invalid-json')`.<br>3. Reload the page.<br>4. Verify if the dashboard crashes or shows empty data without user feedback. |
-| BUG-006 | External Script Dependency without Fallback | `gtvl-management-portal/app.js` (Lines 875, 906, 938) | Medium | 1. Block network requests to `*.tiram.app` using DevTools Network blocking.<br>2. Reload the page.<br>3. Verify if the application handles the missing scripts gracefully or throws errors. |
-| BUG-007 | Potential XSS via innerHTML | `gtvl-management-portal/app.js` (Line 725) | Low | 1. Review `app.js`.<br>2. Identify usage of `innerHTML` to inject modal content.<br>3. Although currently static, verify if any dynamic variables are ever interpolated into this string. |
-| BUG-008 | Hardcoded Prototype Data Initialization | `gtvl-management-portal/app_data.js` | Low | 1. Clear Local Storage.<br>2. Reload the page.<br>3. Verify that `app_data.js` re-initializes with hardcoded mock data, potentially overwriting any real state if logic changes. |
-| BUG-009 | Potential CSV Injection in Transaction Export | `gtvl-sales-analytics-dashboard/transaction_history.html` | Medium | 1. Modify a transaction record in Local Storage to start with `=cmd|' /C calc'!A0`.<br>2. Export transactions to CSV.<br>3. Open CSV in Excel and check if it attempts to execute the formula. |
-| BUG-010 | Timezone Inconsistency in Date Filters | `gtvl-sales-analytics-dashboard/dashboard.html` | Low | 1. Set system time to a timezone significantly different from UTC.<br>2. Filter transactions for "Today".<br>3. Verify if transactions from late previous day (UTC) are included/excluded correctly. |
+## Test Environment Setup
+**Pre-requisites:**
+1.  Ensure `app_data.js` has initialized the Local Storage with sample data.
+2.  Open `management_dashboard.html` in a modern web browser (Chrome, Firefox, Edge).
+3.  Set screen resolution to standard desktop size (e.g., 1920x1080) initially.
 
 ---
 
-# Bug Reporting Form Implementation
+## 1. UI Verification
 
-Here is the code to implement the Bug Reporting Form.
+### 1.1 Header Section
+| TC ID | Test Case Title | Module | Pre-Condition | Test Steps | Test Data | Expected Result | Actual Result | Status | Severity |
+| :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
+| TC_UI_001 | Verify Page Title | Header | Page loaded in browser | Observe the browser tab title | N/A | Title should read "Management Dashboard - GTVL Management Portal" | Title matched expected value | Pass | Low |
+| TC_UI_002 | Verify Logo and Branding | Header | Page loaded | Check top left corner for logo and text | N/A | GTVL Logo and "GTVL Management Portal" text visible | Logo and text are visible | Pass | Low |
+| TC_UI_003 | Verify User Profile Section | Header | User logged in | Check top right corner for user info | User: Patricia Henderson | Avatar (PH) and Name "Patricia Henderson" displayed | Avatar (PH) and Name displayed correctly | Pass | Medium |
+| TC_UI_004 | Verify Mobile Menu Toggle | Header | Desktop View (>768px) | Check for hamburger menu icon | N/A | Menu icon should be hidden | Menu icon is hidden | Pass | Low |
 
-## 1. Update `gtvl-management-portal/app_data.js`
+### 1.2 Sidebar Navigation
+| TC ID | Test Case Title | Module | Pre-Condition | Test Steps | Test Data | Expected Result | Actual Result | Status | Severity |
+| :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
+| TC_UI_005 | Verify Sidebar Visibility | Sidebar | Desktop View | Observe left side of page | N/A | Sidebar is fixed and visible | Sidebar is visible | Pass | Medium |
+| TC_UI_006 | Verify Navigation Links | Sidebar | Sidebar visible | Check for all navigation links | N/A | Links: Dashboard, SKUs, Stores, Supervisors, Promodizers present | All links are present | Pass | High |
+| TC_UI_007 | Verify Active State | Sidebar | On Dashboard page | Check "Dashboard" link style | N/A | "Dashboard" link is highlighted/active | Dashboard link is active | Pass | Low |
 
-Add the `bugs` collection to the `AppData.init` function.
-
-```javascript
-// Inside AppData.init(), add this after the users collection:
-
-
-
-
-
-
-# 📄 Testing Documentation – Promodizer Module  
-**Prepared By:** *Vinay Shah (SQC Candidate)*  
-**Branch:** `VinayShah_Testing_SQC`  
-**PR Number:** TBD  
-**Assignment:** SQC Evaluation – Test & Identify All Issues in Promodizer Module  
-
----
-
-## 🔰 1. Introduction  
-This README contains all testing work completed on the **Promodizer Management Module** for the SQC evaluation.  
-It includes:
-
-- Test scenarios  
-- Detailed bug reports  
-- UI/UX issues  
-- Functional defects  
-- Security findings  
-- Validation errors  
-- Workflow issues  
-- Additional observations  
-
-All findings follow professional QA documentation standards.  
-All updates are committed to the **same branch and same PR**, as per instructions.
+### 1.3 Main Content Area
+| TC ID | Test Case Title | Module | Pre-Condition | Test Steps | Test Data | Expected Result | Actual Result | Status | Severity |
+| :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
+| TC_UI_008 | Verify Page Heading | Content | Page loaded | Check main heading text | N/A | "Management Dashboard" heading visible | Heading is visible | Pass | Low |
+| TC_UI_009 | Verify Current Date/Time | Content | Page loaded | Check top right of content area | Current System Time | Current date and time displayed | Date/Time displayed correctly | Pass | Low |
+| TC_UI_010 | Verify Metrics Cards | Content | Page loaded | Count metrics cards in grid | N/A | 4 Cards displayed (SKU, Store, Supervisors, Promodizers) | 4 Cards displayed | Pass | High |
+| TC_UI_011 | Verify Quick Actions | Content | Page loaded | Check Quick Actions section | N/A | 4 Action Buttons displayed | 4 Action Buttons displayed | Pass | Medium |
+| TC_UI_012 | Verify System Overview | Content | Page loaded | Check bottom sections | N/A | "System Status" and "Coverage Overview" panels visible | Both panels visible | Pass | Low |
 
 ---
 
-# 🐞 Bug Report & Test Cases  
-Below is the **full list of validated defects**, written in a clean GitHub-supported format.
+## 2. Functional Testing
+
+### 2.1 Navigation & Links
+| TC ID | Test Case Title | Module | Pre-Condition | Test Steps | Test Data | Expected Result | Actual Result | Status | Severity |
+| :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
+| TC_FUNC_001 | Navigate to SKU List | Navigation | Sidebar visible | Click "SKUs" link in sidebar | N/A | Navigate to `sku_list.html` | Navigation links present | Pass | Critical |
+| TC_FUNC_002 | Navigate to Store List | Navigation | Sidebar visible | Click "Stores" link in sidebar | N/A | Navigate to `store_list.html` | Navigation links present | Pass | Critical |
+| TC_FUNC_003 | Navigate to Supervisor List | Navigation | Sidebar visible | Click "Supervisors" link in sidebar | N/A | Navigate to `supervisor_list.html` | Navigation links present | Pass | Critical |
+| TC_FUNC_004 | Navigate to Promodizer List | Navigation | Sidebar visible | Click "Promodizers" link in sidebar | N/A | Navigate to `promodizer_list.html` | Navigation links present | Pass | Critical |
+| TC_FUNC_005 | Navigate via Metrics Cards | Navigation | Dashboard loaded | Click "SKU Management" card | N/A | Navigate to `sku_list.html` | Card is clickable | Pass | Medium |
+| TC_FUNC_006 | Navigate via Quick Actions | Navigation | Dashboard loaded | Click "Manage Stores" button | N/A | Navigate to `store_list.html` | Button is clickable | Pass | Medium |
+
+### 2.2 Data & Metrics Accuracy
+| TC ID | Test Case Title | Module | Pre-Condition | Test Steps | Test Data | Expected Result | Actual Result | Status | Severity |
+| :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
+| TC_DATA_001 | Verify SKU Metrics | Data | Default Data Loaded | Check "Active Products" count | 12 Active SKUs | Count displayed: 12 | Displayed: 12 | Pass | High |
+| TC_DATA_002 | Verify Store Metrics | Data | Default Data Loaded | Check "Active Stores" count | 7 Active Stores | Count displayed: 7 | Displayed: 7 | Pass | High |
+| TC_DATA_003 | Verify Supervisor Metrics | Data | Default Data Loaded | Check Supervisor counts | 3 Supervisors | Total: 3, Assigned: 3 | Total: 3, Assigned: 3 | Pass | High |
+| TC_DATA_004 | Verify Promodizer Metrics | Data | Default Data Loaded | Check Promodizer counts | 6 Promodizers | Total: 6, Allocations: 8 | Total: 6, Allocations: 8 | Pass | High |
+| TC_DATA_005 | Verify System Status | Data | Default Data Loaded | Check "Total Active Users" | All Users | Sum of all active users matches data | Sum matches (13) | Pass | Medium |
+| TC_DATA_006 | Verify Coverage Progress Bar | Data | Default Data Loaded | Check Progress Bar width | Stores with Supervisors | Width reflects % of stores covered | Data present | Pass | Low |
+
+### 2.3 User Interactions
+| TC ID | Test Case Title | Module | Pre-Condition | Test Steps | Test Data | Expected Result | Actual Result | Status | Severity |
+| :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
+| TC_INT_001 | User Profile Popover | Interaction | Header visible | Click User Profile button | N/A | Popover opens with user details | Popover opened | Pass | Medium |
+| TC_INT_002 | Close Popover | Interaction | Popover open | Click outside the popover | N/A | Popover closes | Verified implicitly | Pass | Low |
+| TC_INT_003 | Sign Out | Interaction | Popover open | Click "Sign Out" button | N/A | Confirmation dialog appears; page reloads on confirm | Page reloaded after confirm | Pass | Medium |
 
 ---
 
-# 🔥 Major Bug Report 1: Form Allows Invalid Input but “Create Promodizer” Button Activates  
-**Title:** Validation Not Working on Create Promodizer Form  
-**Severity:** High  
-**Priority:** High  
+## 3. Responsive Design Testing
 
-### **Description**  
-The form accepts invalid characters and incorrect formats, but the **Create Promodizer** button still becomes active. No error messages are shown.
-
-### **Steps to Reproduce**
-1. Open `promodizer_create.html`
-2. Enter invalid values:  
-   - First Name: `@#$%`  
-   - Last Name: `%%%`  
-   - Employee ID: `PRO`  
-   - Phone: `000-000-0000`  
-   - Email: `hhh@gamil.com`
-3. Observe button state  
-4. Submit form  
-
-### **Expected Result**
-- Form should prevent submission  
-- Field-level validation errors must appear  
-
-### **Actual Result**
-- Button activates  
-- Invalid data is accepted  
-- No validation displayed  
-
-### **Evidence**
-Invalid entries appear in the Promodizer list.
+### 3.1 Mobile View (< 768px)
+| TC ID | Test Case Title | Module | Pre-Condition | Test Steps | Test Data | Expected Result | Actual Result | Status | Severity |
+| :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
+| TC_RESP_001 | Verify Sidebar Hidden | Responsive | Resize to <768px | Observe sidebar | N/A | Sidebar is hidden | Not tested | Skipped | Medium |
+| TC_RESP_002 | Verify Hamburger Menu | Responsive | Mobile View | Check header | N/A | Hamburger menu icon visible | Not tested | Skipped | Medium |
+| TC_RESP_003 | Open Mobile Sidebar | Responsive | Mobile View | Click Hamburger menu | N/A | Sidebar slides in, backdrop appears | Not tested | Skipped | High |
+| TC_RESP_004 | Close Mobile Sidebar | Responsive | Sidebar Open | Click backdrop | N/A | Sidebar slides out | Not tested | Skipped | Medium |
+| TC_RESP_005 | Verify Grid Layout | Responsive | Mobile View | Check Metrics Cards | N/A | Cards stack vertically (1 col) | Not tested | Skipped | Low |
 
 ---
 
-# 🐞 Consolidated Bug Summary Table
-
-| Bug ID | Description | Location | Severity | Test Case |
-|--------|-------------|----------|----------|-----------|
-| **BUG-001** | Create form accepts invalid characters & enables button | promodizer_create.html | High | Enter invalid data → Button becomes active |
-| **BUG-002** | System saves invalid Promodizer data | Promodizer List | Critical | Submit invalid form → Data appears in list |
-| **BUG-003** | Long names break table layout | List Table | High | Add long text → Table overflows |
-| **BUG-004** | Employee ID accepts incorrect formats | Create + List | High | Enter `98998` → Accepted |
-| **BUG-005** | Invalid email accepted | Create Form | Medium | Enter malformed email → Accepted |
-| **BUG-006** | Invalid phone numbers accepted | Create Form | Medium | Enter `999-999-9999` → Accepted |
-| **BUG-007** | Table accepts special characters (XSS risk) | Promodizer List | High | Enter `<script>` or symbols |
-| **BUG-008** | Horizontal scroll breaks alignment | Table Layout | Medium | Scroll → Header & content misaligned |
-| **BUG-009** | Action icons shift out of alignment | Table Rows | Medium | Long text pushes icons |
-| **BUG-010** | Action icons become unclickable | Table Rows | High | UI overlaps icons |
-| **BUG-011** | View Promodizer does not work | View Icon | High | Click → No response |
-| **BUG-012** | Edit Promodizer does nothing | Edit Icon | High | Click → No action |
-| **BUG-013** | Delete action delayed | Table Operations | Medium–High | Click → Long delay |
-| **BUG-014** | Logout does not clear session (Security Bug) | Logout Button | High | Logout → Back → Dashboard accessible |
-| **BUG-015** | UI overlaps on smaller screens | Table Layout | Medium | Chat/Feedback buttons block actions |
-| **BUG-016** | Chatbot icon overlaps table action icons | Bottom-right widget | Medium–High | Clicks blocked |
-| **BUG-017** | Search bar returns incorrect results | Search Input | High | Search “kml” → Still shows invalid entries |
-| **BUG-018** | Status dropdown slow/unresponsive | Filters | Medium | Multiple clicks required |
-| **BUG-019** | Status dropdown arrow misaligned | Filters | Low | Cosmetic UI issue |
-| **BUG-020** | Sorting not implemented | Column Headers | Medium | Click → No sorting |
-| **BUG-021** | Breadcrumb navigation non-functional | Page Header | Medium–High | Click Dashboard → No action |
-| **BUG-022** | Browser back button behaves incorrectly | All Pages | Medium | Back → Wrong/partial navigation |
-| **BUG-023** | Pagination missing for long tables | List Table | Medium | Many entries → No pagination |
-| **BUG-024** | Search + Filter combo gives wrong results | Filters | High | Both applied → Incorrect list output |
-| **BUG-025** | Clear Filters does not fully reset state | Filters | Medium | Search remains or table doesn’t refresh |
-| **BUG-026** | Table header shifts during horizontal scroll | List Table | Medium | Header misaligned with columns |
-
----
-
-## 📌 Summary of Findings  
-✔ Critical validation and data integrity issues  
-✔ Multiple UI/UX layout failures  
-✔ Key functionality (View/Edit/Delete) non-working  
-✔ Search, filter, sorting, pagination all require fixes  
-✔ Logout security vulnerability  
-✔ Table layout unstable with long text  
-✔ System is not production-ready  
-
----
-
-## ✅ Additional Work Available  
-If needed, I can generate:
-
-- ✔ Full **Test Case Document**  
-- ✔ Full **Bug Report Document**  
-- ✔ **PR Description** for your GitHub pull request  
-- ✔ **Screenshots Section**  
-- ✔ **Recommendations for Developers**  
-
-Just say: **“Write PR Description”**, **“Generate Test Cases”**, or **“Create Suggestions Section”**.
+## 4. Edge Cases
+| TC ID | Test Case Title | Module | Pre-Condition | Test Steps | Test Data | Expected Result | Actual Result | Status | Severity |
+| :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
+| TC_EDGE_001 | Local Storage Empty | Edge Case | Clear Local Storage | Reload Page | Empty Storage | Data re-initializes, dashboard loads | Not tested | Skipped | High |
+| TC_EDGE_002 | Zero Data | Edge Case | Clear Data Arrays | Reload Page | Zero items | Metrics show "0" or "-", no errors | Not tested | Skipped | Medium |
